@@ -106,10 +106,7 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// Root route
-app.get("/", (req, res) => {
-  res.send("Voyager Backend is running successfully 🚀");
-});
+
 
 app.use(cors({
   origin: [
@@ -144,4 +141,5 @@ app.listen(PORT, () => {
 // app.listen(PORT, () => {
 //   console.log(`🚀 Server running on port ${PORT}`);
 // });
+
 
