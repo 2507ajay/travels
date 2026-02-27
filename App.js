@@ -16,8 +16,8 @@ const TravelApp = () => {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
-  const API_URL_REVIEWS = 'http://localhost:5000/api/reviews';
-  const API_URL_DESTINATIONS = 'http://localhost:5000/api/destinations';
+  const API_URL_REVIEWS = 'https://travels-1-3tf2.onrender.com/api/reviews';
+  const API_URL_DESTINATIONS = 'https://travels-1-3tf2.onrender.com/api/destinations';
 
   // --- States ---
   const [search, setSearch] = useState("");
@@ -83,7 +83,7 @@ const TravelApp = () => {
  const handlePopupSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch('https://travels-1-3tf2.onrender.com/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(popupFormData),
