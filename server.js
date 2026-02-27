@@ -105,8 +105,21 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- SERVER START ---
+// Root route
+app.get("/", (req, res) => {
+  res.send("Voyager Backend is running successfully 🚀");
+});
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://travels-frontend.onrender.com"
+  ]
+}));
+
+// Server start
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
