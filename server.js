@@ -132,7 +132,7 @@ app.get('*', (req, res) => {
 const PORT = process.env.PORT || 10000; // Render usually uses port 10000
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on ports ${PORT}`);
 });
 
 // // Server start
@@ -141,5 +141,6 @@ app.listen(PORT, () => {
 // app.listen(PORT, () => {
 //   console.log(`🚀 Server running on port ${PORT}`);
 // });
+
 
 
