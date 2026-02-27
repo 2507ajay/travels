@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 app.use(cors()); 
@@ -117,9 +118,30 @@ app.use(cors({
   ]
 }));
 
+
+// --- SERVE FRONTEND ---
+// This looks "up" one level from the Backend folder to find the 'build' folder
+app.use(express.static(path.join(__dirname, '../build')));
+
+app.get('*', (req, res) => {
+  // If the request isn't for an API, send the frontend
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+  }
+});
+
+
 // Server start
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000; // Render usually uses port 10000
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+// // Server start
+// const PORT = process.env.PORT || 5000;
+
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server running on port ${PORT}`);
+// });
+
