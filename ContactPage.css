@@ -1,0 +1,200 @@
+/* Layout Wrapper */
+.contact-page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Left Section Styles */
+.contact-left {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 60px 5%;
+  color: #333;
+}
+
+.back-btn-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  /* Soft border instead of harsh blue */
+  border: 1px solid rgba(0, 0, 0, 0.05); 
+  padding: 10px 20px;
+  /* Fully rounded pill shape */
+  border-radius: 50px; 
+  color: #1e293b; /* Darker, more professional text */
+  cursor: pointer;
+  margin-bottom: 40px;
+  font-weight: 600;
+  /* Smooth transition for all properties */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Elegant soft shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover Effect: The button "lifts" and the shadow deepens */
+.back-btn-pill:hover {
+  background: #f8fafc;
+  transform: translateX(-5px); /* Moves slightly left to indicate "back" */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+/* Styling the text inside */
+.back-btn-pill span { 
+  color: #64748b; 
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.back-btn-pill:hover span {
+  color: #3b82f6; /* Text turns blue on hover */
+}
+
+/* The Icon/Arrow styling */
+.arrow-red { 
+  color: #ef4444; 
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.back-btn-pill:hover .arrow-red {
+  transform: scale(1.2); /* Icon grows slightly on hover */
+}
+
+
+
+/* Refined & Stylish Temple Card */
+.temple-card {
+  position: relative;
+  max-width: 400px; /* Reduces the size to look more like a 'card' than a banner */
+  height: 220px;   /* Fixed height for consistency */
+  border-radius: 20px; /* Curvier corners for a modern feel */
+  overflow: hidden;
+  margin: 15px 0 30px 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); /* Softer, deeper shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.temple-card:hover {
+  transform: translateY(-8px); /* Elegant lift effect */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.temple-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the space without stretching */
+  display: block;
+  filter: brightness(0.85) contrast(1.1); /* Slightly more dramatic lighting */
+  transition: scale 0.5s ease;
+}
+
+.temple-card:hover img {
+  scale: 1.05; /* Subtle zoom on hover */
+}
+
+.image-overlay-text {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  backdrop-filter: blur(4px); /* Glassmorphism effect */
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Info List */
+.info-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.icon-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+.blue-bg { background: #3b82f6; color: white; }
+.blue-text { color: #3b82f6; }
+
+/* Right Section Styles */
+.contact-right {
+  flex: 1;
+  background-color: #334155; /* Slate color from image */
+  padding: 60px 5%;
+  color: white;
+}
+
+.form-white-card {
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 30px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.form-input-group {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 5px 15px;
+}
+
+.form-input-group input, .form-input-group textarea {
+  flex: 1;
+  border: none;
+  padding: 10px 0;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.placeholder-hint {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.send-btn-outline {
+  border: 1px solid #3b82f6;
+  background: white;
+  color: #3b82f6;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ssb-logo {
+  font-weight: 900;
+  color: #3b82f6;
+  margin-right: 15px;
+  font-size: 1.2rem;
+}
+
+.success-state {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-page-wrapper { flex-direction: column; }
+}
