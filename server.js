@@ -111,7 +111,8 @@ app.post('/api/reviews', async (req, res) => {
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://travels-frontend.onrender.com"
+    "https://travels-frontend.onrender.com",
+    "https://travels-1-3tf2.onrender.com"
   ]
 }));
 
@@ -141,6 +142,7 @@ app.listen(PORT, () => {
 // app.listen(PORT, () => {
 //   console.log(`🚀 Server running on port ${PORT}`);
 // });
+
 
 
 
