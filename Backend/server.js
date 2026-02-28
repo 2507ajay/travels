@@ -12,7 +12,7 @@ app.use(cors({
   origin: [
     "http://localhost:3000",
     "https://travels-frontend.onrender.com",
-    "https://travels-1-3tf2.onrender.com"
+  "https://travels-2-czoy.onrender.com"
   ]
 }));
 app.use(express.json()); 
