@@ -7,12 +7,11 @@ const path = require('path');
 const app = express();
 
 // --- 1. MIDDLEWARE ---
-// Use only the specific CORS configuration
 app.use(cors({
   origin: [
     "http://localhost:3000",
     "https://travels-frontend.onrender.com",
-  "https://travels-2-czoy.onrender.com"
+    "https://travels-2-czoy.onrender.com"
   ]
 }));
 app.use(express.json()); 
@@ -20,11 +19,14 @@ app.use(express.json());
 // --- 2. DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db';
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, {
+  serverSelectionTimeoutMS: 30000, 
+  socketTimeoutMS: 45000,         
+})
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
-// --- 3. SCHEMAS & MODELS ---
+// --- 3. MODELS --- (Keeping your existing logic)
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -49,7 +51,7 @@ const Review = mongoose.model('Review', new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 }));
 
-// --- 4. API ROUTES ---
+// --- 4. API ROUTES --- (Keeping your existing routes)
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -108,11 +110,16 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- SERVE FRONTEND ---
+// --- 5. SERVE FRONTEND ---
+// Static files
 app.use(express.static(path.join(__dirname, '../build')));
 
-// FIXED FOR EXPRESS 5: Using a named capture group
-app.get('/:any', (req, res) => {
+// FIXED: Catch-all route for React Router
+app.get('*', (req, res) => {
+  // If request is for an API route that doesn't exist, don't serve index.html
+  if (req.url.startsWith('/api')) {
+    return res.status(404).json({ message: "API not found" });
+  }
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
