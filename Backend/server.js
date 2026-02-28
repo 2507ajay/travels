@@ -112,8 +112,8 @@ app.post('/api/reviews', async (req, res) => {
 // Static files from the React build folder
 app.use(express.static(path.join(__dirname, '../build')));
 
-// FIXED FOR EXPRESS 5: Named parameter catch-all
-app.get('/:path*', (req, res) => {
+// TO THIS (Express 5 exact catch-all):
+app.get('/:path(*)', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
