@@ -98,8 +98,9 @@ console.log("🔍 Checking for build folder at:", buildPath);
 
 app.use(express.static(buildPath));
 
-app.get('/:splat*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
+// Express 5 compatible catch-all
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 // --- 6. SERVER START ---
