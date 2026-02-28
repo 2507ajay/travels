@@ -13,7 +13,7 @@ connectDB();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://travels-frontend.onrender.com",
+    // "https://travels-frontend.onrender.com",
     "https://travels-2-czoy.onrender.com"
   ]
 }));
