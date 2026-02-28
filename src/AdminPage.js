@@ -21,13 +21,13 @@ const AdminPage = () => {
   // Create a clean object to send
   const destinationToUpload = {
     name: formData.name,
-    state: formData.country,
+    state: formData.state,
     rating: parseFloat(formData.rating), // Convert string to number
     img: formData.img
   };
 
   try {
-    const response = await fetch('http://localhost:5000/api/destinations', {
+    const response = await fetch('https://travels-2-czoy.onrender.com/api/destinations', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json' 
@@ -66,7 +66,7 @@ const AdminPage = () => {
     try {
       setIsLoading(true);
       // Replace this URL with your actual backend API (e.g., http://localhost:5000/api/bookings)
-      const response = await fetch('http://localhost:5000/api/bookings');
+      const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings');
       if (!response.ok) throw new Error('Failed to fetch data');
       
       const data = await response.json();
@@ -101,7 +101,7 @@ const AdminPage = () => {
   // =================== Review fetchBookings =======================
 
   const [reviewCount, setReviewCount] = useState(0);
-  const API_URL_REVIEWS = 'http://localhost:5000/api/reviews';
+  const API_URL_REVIEWS = 'https://travels-2-czoy.onrender.com/api/reviews';
 
   useEffect(() => {
     const fetchReviewStats = async () => {
@@ -255,3 +255,4 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
