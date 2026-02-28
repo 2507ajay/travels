@@ -20,8 +20,9 @@ app.use(express.json()); 
 // --- 2. DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://travels_db:25072000Ajay@cluster0.7as2grm.mongodb.net/travels_db?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(MONGO_URI, {
-  serverSelectionTimeoutMS: 30000, // Wait 30 seconds instead of 10
-  socketTimeoutMS: 45000,         // Close sockets after 45 seconds of inactivity
+  serverSelectionTimeoutMS: 5000, // Reduced from 30000 to 5000 for faster debugging
+  connectTimeoutMS: 10000,
+  family: 4 // Forces IPv4 (Render sometimes struggles with IPv6)
 })
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
