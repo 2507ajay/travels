@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,9 +5,19 @@ require('dotenv').config();
 const path = require('path');
 
 const app = express();
-app.use(cors()); 
+
+// --- MIDDLEWARE ---
+// Keeping only the specific CORS config
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://travels-frontend.onrender.com",
+    "https://travels-1-3tf2.onrender.com"
+  ]
+}));
 app.use(express.json()); 
 
+// --- DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db';
 
 mongoose.connect(MONGO_URI)
@@ -16,7 +25,6 @@ mongoose.connect(MONGO_URI)
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
 // --- 1. SCHEMAS & MODELS ---
-
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -42,7 +50,6 @@ const Review = mongoose.model('Review', new mongoose.Schema({
 }));
 
 // --- 2. DESTINATION ROUTES ---
-
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -63,7 +70,6 @@ app.post('/api/destinations', async (req, res) => {
 });
 
 // --- 3. BOOKING ROUTES ---
-
 app.get('/api/bookings', async (req, res) => {
   try {
     const allBookings = await Booking.find();
@@ -83,9 +89,7 @@ app.post('/api/bookings', async (req, res) => {
   }
 });
 
-// --- 4. REVIEW ROUTES (Real-time Backend Logic) ---
-
-// GET: Fetch all reviews for the slider
+// --- 4. REVIEW ROUTES ---
 app.get('/api/reviews', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ createdAt: -1 });
@@ -95,7 +99,6 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
-// POST: Submit a new review from the modal
 app.post('/api/reviews', async (req, res) => {
   try {
     const { name, stars, text, avatar, role } = req.body;
@@ -107,41 +110,17 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-
-
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://travels-frontend.onrender.com",
-    "https://travels-1-3tf2.onrender.com"
-  ]
-}));
-
-
-// --- SERVE FRONTEND ---
-// This looks "up" one level from the Backend folder to find the 'build' folder
+// --- 5. SERVE FRONTEND ---
+// Serving the static files from the React build folder
 app.use(express.static(path.join(__dirname, '../build')));
 
-
-// NEW WAY (Express 5) - Change '*' to '/*path' or '{$}'
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+// Catch-all route for Express 5
+app.get('/:path*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
-
-// Server start
-const PORT = process.env.PORT || 10000; // Render usually uses port 10000
-
+// --- 6. SERVER START ---
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on ports ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
-
-// // Server start
-// const PORT = process.env.PORT || 5000;
-
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on port ${PORT}`);
-// });
-
-
-
