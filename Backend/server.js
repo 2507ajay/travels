@@ -96,8 +96,8 @@ app.post('/api/reviews', async (req, res) => {
 const buildPath = path.resolve(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 
-// 2. Then, catch-all '*' sends index.html for any request that ISN'T an API route.
-app.get('*', (req, res) => {
+// Express 5 requires the parenthesis (.*) for catch-all routes
+app.get('(.*)', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
