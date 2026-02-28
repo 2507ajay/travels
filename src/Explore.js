@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Compass, Star } from 'lucide-react'; // Added Star for rating
+import { ArrowRight, Compass, Star } from 'lucide-react'; 
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Explore.css';
@@ -8,15 +8,16 @@ import './Explore.css';
 const Explore = () => {
   const navigate = useNavigate();
   
-  // 1. Setup state for dynamic destinations
   const [destinations, setDestinations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 2. Fetch data from your backend (using the same port 5000 from AdminPage)
+  // 1. UPDATED: Points to your live Render backend
+  const API_URL = 'https://travels-2-czoy.onrender.com/api/destinations';
+
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/destinations');
+        const response = await axios.get(API_URL);
         setDestinations(response.data);
       } catch (error) {
         console.error("Error fetching destinations:", error);
@@ -47,7 +48,9 @@ const Explore = () => {
 
       <div className="explore-grid">
         {isLoading ? (
-          <p>Loading adventures...</p>
+          <div className="loading-container">
+            <p>Loading adventures...</p>
+          </div>
         ) : (
           destinations.map((dest, index) => (
             <motion.div 
@@ -59,7 +62,6 @@ const Explore = () => {
               viewport={{ once: true }}
             >
               <div className="explore-img-wrapper">
-                {/* Dynamic Image from DB */}
                 <img src={dest.img} alt={dest.name} />
                 <div className="category-tag">
                   <Compass size={20} />
@@ -70,14 +72,14 @@ const Explore = () => {
               <div className="explore-details">
                 <h3>{dest.name}</h3>
                 
-                {/* CENTERED OVERALL RATING DISPLAY */}
+                {/* KEEP CENTERED OVERALL RATING DISPLAY */}
                 <div className="rating-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', margin: '10px 0' }}>
                    <Star size={16} fill="#ffb400" color="#ffb400" />
                    <span style={{ fontWeight: 'bold' }}>{dest.rating}</span>
                    <span style={{ color: '#666', fontSize: '0.8rem' }}>(Overall Rating)</span>
                 </div>
 
-                <button className="explore-cta">
+                <button className="explore-cta" onClick={() => navigate('/bookpage')}>
                   View Trips <ArrowRight size={16} />
                 </button>
               </div>
