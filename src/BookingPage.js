@@ -5,9 +5,13 @@ import './BookingPage.css';
 
 const BookingPage = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', number: '' , location: ''});
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    number: '', 
+    location: '' 
+  });
 
-  // Single handler for all inputs to keep focus stable
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -19,36 +23,40 @@ const BookingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      // UPDATED: Points to your live Render backend
+      const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
-      if (data.success) {
-        alert(`Success! Trip booked for ${formData.name}.`);
+      
+      if (response.ok) {
+        alert(`✨ Success! Trip booked for ${formData.name}.`);
         navigate('/'); 
+      } else {
+        alert(`Error: ${data.message || "Failed to book"}`);
       }
     } catch (error) {
-      alert("Server is offline. Check your backend connection.");
+      console.error("Booking error:", error);
+      alert("Could not connect to the server. Please check your internet.");
     }
   };
 
   return (
     <div className="booking-container">
-      {/* // Add a unique key to the motion div */}
-<motion.div 
-  key="booking-form-unique" // <--- Add this stable key
-  initial={{ opacity: 0, scale: 0.9, y: 30 }} 
-  animate={{ opacity: 1, scale: 1, y: 0 }} 
-  transition={{ duration: 0.6, ease: "easeOut" }}
-  className="booking-card"
->
+      <motion.div 
+        key="booking-form-unique"
+        initial={{ opacity: 0, scale: 0.9, y: 30 }} 
+        animate={{ opacity: 1, scale: 1, y: 0 }} 
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="booking-card"
+      >
         <h2>Secure Your Spot</h2>
         <p>Journey to the edge of the world with us.</p>
 
         <form onSubmit={handleSubmit} className="booking-form">
-          {/* Added 'name' and 'value' to every input */}
           <input 
             type="text" 
             name="name"
@@ -73,11 +81,11 @@ const BookingPage = () => {
             required 
             onChange={handleChange} 
           />
-           <input 
-            type="loc" 
+          <input 
+            type="text" // Fixed type
             name="location"
-            placeholder="Location" 
-            value={formData.data}
+            placeholder="Where do you want to go?" 
+            value={formData.location} // FIXED: matched to state key
             required 
             onChange={handleChange} 
           />
