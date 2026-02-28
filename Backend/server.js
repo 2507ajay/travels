@@ -1,27 +1,21 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
-const mongoose = require('mongoose'); // Moved up for clarity
 require('dotenv').config();
-const connectDB = require('./db'); 
 
 const app = express();
-
-// --- 1. CONNECT TO DATABASE ---
-connectDB();
-
-// --- 2. MIDDLEWARE ---
-// FIX: Added more robust CORS to handle Render's dynamic nature
-app.use(cors({
-  origin: "*", // Allows all origins during testing to fix the 400/CORS issues
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+app.use(cors()); 
 app.use(express.json()); 
 
-// --- 3. MODELS ---
-// FIX: Use 'mongoose.models.Name || model' to prevent "OverwriteModelError"
-const Booking = mongoose.models.Booking || mongoose.model('Booking', new mongoose.Schema({
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected Successfully'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+
+// --- 1. SCHEMAS & MODELS ---
+
+const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   number: { type: String, required: true },
@@ -29,14 +23,14 @@ const Booking = mongoose.models.Booking || mongoose.model('Booking', new mongoos
   bookingDate: { type: Date, default: Date.now }
 }));
 
-const Destination = mongoose.models.Destination || mongoose.model('Destination', new mongoose.Schema({
+const Destination = mongoose.model('Destination', new mongoose.Schema({
   name: String,
   state: String,
   rating: Number,
   img: String
 }));
 
-const Review = mongoose.models.Review || mongoose.model('Review', new mongoose.Schema({
+const Review = mongoose.model('Review', new mongoose.Schema({
   name: { type: String, required: true },
   role: { type: String, default: 'Explorer' },
   stars: { type: Number, required: true, min: 1, max: 5 },
@@ -45,9 +39,8 @@ const Review = mongoose.models.Review || mongoose.model('Review', new mongoose.S
   createdAt: { type: Date, default: Date.now }
 }));
 
-// --- 4. API ROUTES ---
+// --- 2. DESTINATION ROUTES ---
 
-// Destinations
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -67,7 +60,8 @@ app.post('/api/destinations', async (req, res) => {
   }
 });
 
-// Bookings
+// --- 3. BOOKING ROUTES ---
+
 app.get('/api/bookings', async (req, res) => {
   try {
     const allBookings = await Booking.find();
@@ -80,14 +74,16 @@ app.get('/api/bookings', async (req, res) => {
 app.post('/api/bookings', async (req, res) => {
   try {
     const newBooking = new Booking(req.body);
-    await newBooking.save(); // TABLE CREATION HAPPENS HERE
+    await newBooking.save();
     res.status(201).json({ success: true, message: 'Booking stored!' });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
   }
 });
 
-// Reviews
+// --- 4. REVIEW ROUTES (Real-time Backend Logic) ---
+
+// GET: Fetch all reviews for the slider
 app.get('/api/reviews', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ createdAt: -1 });
@@ -97,9 +93,11 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
+// POST: Submit a new review from the modal
 app.post('/api/reviews', async (req, res) => {
   try {
-    const newReview = new Review(req.body);
+    const { name, stars, text, avatar, role } = req.body;
+    const newReview = new Review({ name, stars, text, avatar, role });
     await newReview.save();
     res.status(201).json(newReview); 
   } catch (err) {
@@ -107,20 +105,10 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- 5. SERVE FRONTEND (Corrected) ---
-const buildPath = path.join(__dirname, 'build'); // Adjust if build is elsewhere
-app.use(express.static(buildPath));
 
-// FIX: Standard React Router catch-all
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(buildPath, 'index.html'));
-  }
-});
 
-// --- 6. SERVER START ---
-// FIX: Explicitly bind to '0.0.0.0' for Render
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// --- SERVER START ---
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
