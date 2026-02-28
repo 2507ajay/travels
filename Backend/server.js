@@ -17,18 +17,16 @@ app.use(cors({
 app.use(express.json()); 
 
 // --- 2. DATABASE CONNECTION ---
-// Prioritize the environment variable. Only use the hardcoded string if ENV is missing.
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://travels_db:25072000Ajay@cluster0.7as2grm.mongodb.net/travels_db?retryWrites=true&w=majority&appName=Cluster0';
-
 mongoose.connect(MONGO_URI, {
-  serverSelectionTimeoutMS: 8000, // Slightly increased for stability
+  serverSelectionTimeoutMS: 8000, 
   connectTimeoutMS: 15000,
   family: 4 
 })
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
-// --- 3. SCHEMAS & MODELS --- (Your schemas are perfectly defined)
+// --- 3. SCHEMAS & MODELS ---
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -53,7 +51,7 @@ const Review = mongoose.model('Review', new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 }));
 
-// --- 4. API ROUTES --- (Your route logic is solid)
+// --- 4. API ROUTES (Must come BEFORE static files) ---
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -93,13 +91,12 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- 5. SERVE FRONTEND (CRITICAL REPAIR) ---
-// Define build path clearly
-const buildPath = path.join(__dirname, '../build');
+// --- 5. SERVE FRONTEND (The order matters!) ---
+// 1. First, tell Express where the static files (JS, CSS, Images) are.
+const buildPath = path.resolve(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 
-// FIX: Using '*' instead of '/:any' ensures all React Router paths (like /explore) 
-// work correctly when the user refreshes the page.
+// 2. Then, catch-all '*' sends index.html for any request that ISN'T an API route.
 app.get('*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
