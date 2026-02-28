@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json()); 
 
 // --- 2. DATABASE CONNECTION ---
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://travels_db:<db_password>@cluster0.7as2grm.mongodb.net/?appName=Cluster0';
 
 mongoose.connect(MONGO_URI, {
   serverSelectionTimeoutMS: 30000, // Wait 30 seconds instead of 10
