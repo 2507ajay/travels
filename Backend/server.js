@@ -128,6 +128,10 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../build', 'index.html'));
   }
 });
+// NEW WAY (Express 5) - Change '*' to '/*path' or '{$}'
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 
 // Server start
