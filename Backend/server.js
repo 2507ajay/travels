@@ -11,7 +11,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected Successfully'))
-  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err)); 
 
 // --- 1. SCHEMAS & MODELS ---
 
