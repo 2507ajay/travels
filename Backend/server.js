@@ -125,5 +125,5 @@ app.get('/{*splat}', (req, res) => {
 // --- 6. SERVER START ---
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on ports ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
