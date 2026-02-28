@@ -108,12 +108,11 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- 5. SERVE FRONTEND ---
-// Static files from the React build folder
+// --- SERVE FRONTEND ---
 app.use(express.static(path.join(__dirname, '../build')));
 
-// TO THIS (Express 5 exact catch-all):
-app.get('/:path(*)', (req, res) => {
+// FIXED FOR EXPRESS 5: Using the new 'splat' parameter syntax
+app.get('/{*}', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
