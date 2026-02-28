@@ -111,8 +111,8 @@ app.post('/api/reviews', async (req, res) => {
 // --- SERVE FRONTEND ---
 app.use(express.static(path.join(__dirname, '../build')));
 
-// FIXED FOR EXPRESS 5: Using the new 'splat' parameter syntax
-app.get('/{*}', (req, res) => {
+// FIXED FOR EXPRESS 5: Using a named capture group
+app.get('/:any', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
