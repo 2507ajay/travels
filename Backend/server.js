@@ -77,8 +77,9 @@ app.post('/api/reviews', async (req, res) => {
 const buildPath = path.resolve(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 
-// Final fix for Express 5.2.1 PathError
-app.get('/:any(.*)', (req, res) => {
+// Express 5.2.1+ Final Catch-all Syntax
+// This uses a named parameter 'any' with a non-greedy wildcard
+app.get('/:any*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
