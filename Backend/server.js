@@ -6,8 +6,8 @@ const path = require('path');
 
 const app = express();
 
-// --- MIDDLEWARE ---
-// Keeping only the specific CORS config
+// --- 1. MIDDLEWARE ---
+// Use only the specific CORS configuration
 app.use(cors({
   origin: [
     "http://localhost:3000",
@@ -17,14 +17,14 @@ app.use(cors({
 }));
 app.use(express.json()); 
 
-// --- DATABASE CONNECTION ---
+// --- 2. DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/voyager_db';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
-// --- 1. SCHEMAS & MODELS ---
+// --- 3. SCHEMAS & MODELS ---
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -49,7 +49,7 @@ const Review = mongoose.model('Review', new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 }));
 
-// --- 2. DESTINATION ROUTES ---
+// --- 4. API ROUTES ---
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -69,7 +69,6 @@ app.post('/api/destinations', async (req, res) => {
   }
 });
 
-// --- 3. BOOKING ROUTES ---
 app.get('/api/bookings', async (req, res) => {
   try {
     const allBookings = await Booking.find();
@@ -89,7 +88,6 @@ app.post('/api/bookings', async (req, res) => {
   }
 });
 
-// --- 4. REVIEW ROUTES ---
 app.get('/api/reviews', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ createdAt: -1 });
@@ -111,10 +109,10 @@ app.post('/api/reviews', async (req, res) => {
 });
 
 // --- 5. SERVE FRONTEND ---
-// Serving the static files from the React build folder
+// Static files from the React build folder
 app.use(express.static(path.join(__dirname, '../build')));
 
-// Catch-all route for Express 5
+// FIXED FOR EXPRESS 5: Named parameter catch-all
 app.get('/:path*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
