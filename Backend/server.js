@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 app.use(cors()); 
@@ -102,6 +103,17 @@ app.post('/api/reviews', async (req, res) => {
     res.status(201).json(newReview); 
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+});
+
+// '..' moves UP out of the Backend folder to the root where 'build' lives
+const buildPath = path.join(__dirname, '..', 'build'); 
+app.use(express.static(buildPath));
+
+// This handles React Routing
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(buildPath, 'index.html'));
   }
 });
 
