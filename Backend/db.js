@@ -6,8 +6,8 @@ const connectDB = async () => {
   try {
     // Increased timeouts to prevent "buffering timed out" on Render
     const conn = await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 30000, // Wait 30 seconds for initial connection
-      socketTimeoutMS: 45000,         // Close sockets after 45 seconds of inactivity
+      //serverSelectionTimeoutMS: 30000, // Wait 30 seconds for initial connection
+     // socketTimeoutMS: 45000,         // Close sockets after 45 seconds of inactivity
     });
     
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
@@ -19,3 +19,4 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
