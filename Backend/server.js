@@ -96,8 +96,9 @@ app.post('/api/reviews', async (req, res) => {
 const buildPath = path.resolve(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 
-// Express 5 requires the parenthesis (.*) for catch-all routes
-app.get('(.*)', (req, res) => {
+// The ':splat' gives the wildcard a name, and '*' tells it to match everything.
+// This is the mandatory syntax for Express 5.0+
+app.get('/:splat*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
