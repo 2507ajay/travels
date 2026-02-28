@@ -122,12 +122,7 @@ app.use(cors({
 // This looks "up" one level from the Backend folder to find the 'build' folder
 app.use(express.static(path.join(__dirname, '../build')));
 
-app.get('*', (req, res) => {
-  // If the request isn't for an API, send the frontend
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../build', 'index.html'));
-  }
-});
+
 // NEW WAY (Express 5) - Change '*' to '/*path' or '{$}'
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../build', 'index.html'));
