@@ -91,29 +91,15 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- 5. SERVE FRONTEND (The order matters!) ---
-// 1. First, tell Express where the static files (JS, CSS, Images) are.
+// --- 5. SERVE FRONTEND (Clean Version) ---
+// I have removed all duplicate declarations here
 const buildPath = path.resolve(__dirname, '..', 'build');
-app.use(express.static(buildPath));
-
-// --- 5. SERVE FRONTEND (Diagnostics Version) ---
-const buildPath = path.resolve(__dirname, '..', 'build');
-
-// This will print the actual path in your Render logs so we can see if it's right
 console.log("🔍 Checking for build folder at:", buildPath);
 
 app.use(express.static(buildPath));
 
 app.get('/:splat*', (req, res) => {
-  const indexPath = path.join(buildPath, 'index.html');
-  
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      console.error("❌ ERROR: index.html not found at:", indexPath);
-      // This sends a clear message to your browser instead of a generic error
-      res.status(500).send(`Frontend build missing at ${indexPath}. Check your Render Build Command.`);
-    }
-  });
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // --- 6. SERVER START ---
