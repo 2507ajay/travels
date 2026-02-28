@@ -82,23 +82,28 @@ const API_URL_DESTINATIONS = 'https://travels-2-czoy.onrender.com/api/destinatio
   };
 
   // 3. Handle Submit to DB (matching your BookingPage logic)
- const handlePopupSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(popupFormData),
-      });
-      const data = await response.json();
-      if (data.success) {
-        alert(`Success! Trip booked for ${popupFormData.name}.`);
-        navigate('/'); 
-      }
-    } catch (error) {
-      alert("Server is offline. Check your backend connection.");
+const handlePopupSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(popupFormData),
+    });
+
+    // CHANGE: Check response.ok instead of data.success
+    if (response.ok) {
+      alert(`Success! Trip booked for ${popupFormData.name}.`);
+      setShowWelcomePopup(false); // Close the popup
+      setPopupFormData({ name: '', email: '', number: '', location: '' }); // Clear form
+    } else {
+      const errorData = await response.json();
+      alert(`Booking Failed: ${errorData.message}`);
     }
-  };
+  } catch (error) {
+    alert("Connection error. The server might be sleeping.");
+  }
+};
 
 
   // --- Automatic Popup Logic ---
