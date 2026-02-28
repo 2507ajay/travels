@@ -15,41 +15,31 @@ const AdminPage = () => {
     rating: '',
     img: ''
   });
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
   
-  // Create a clean object to send
+  // Basic URL Validation
+  if (!formData.img.startsWith('http')) {
+    alert("Please enter a valid image URL");
+    return;
+  }
+
   const destinationToUpload = {
-    name: formData.name,
-    state: formData.state,
-    rating: parseFloat(formData.rating), // Convert string to number
-    img: formData.img
+    name: formData.name.trim(),
+    state: formData.state.trim(),
+    rating: Number(formData.rating), 
+    img: formData.img.trim()
   };
 
   try {
-    const response = await fetch('https://travels-2-czoy.onrender.com/api/destinations', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(destinationToUpload)
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("✨ Destination Published Successfully!");
-      setFormData({ name: '', state: '', rating: '', img: '' }); 
-    } else {
-      alert(`Error: ${result.message}`);
-    }
+    const response = await axios.post('https://travels-2-czoy.onrender.com/api/destinations', destinationToUpload);
+    alert("✨ Destination Published Successfully!");
+    setFormData({ name: '', state: '', rating: '', img: '' });
   } catch (error) {
-    console.error("Connection Error:", error);
-    alert("Could not connect to the server. Is it running on port 5000?");
+    const errorMsg = error.response?.data?.message || "Server Connection Error";
+    alert(`Upload Failed: ${errorMsg}`);
   }
 };
-
-
   /*const weeklyData = [
     { day: 'Mon', value: 40 }, { day: 'Tue', value: 70 }, { day: 'Wed', value: 45 },
     { day: 'Thu', value: 90 }, { day: 'Fri', value: 65 }, { day: 'Sat', value: 80 }, { day: 'Sun', value: 95 },
@@ -255,4 +245,5 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
 
