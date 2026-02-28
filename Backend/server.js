@@ -92,15 +92,15 @@ app.post('/api/reviews', async (req, res) => {
 });
 
 // --- 5. SERVE FRONTEND (Clean Version) ---
-// I have removed all duplicate declarations here
+// --- 5. SERVE FRONTEND (Clean & Express 5 Compatible) ---
 const buildPath = path.resolve(__dirname, '..', 'build');
 console.log("🔍 Checking for build folder at:", buildPath);
 
 app.use(express.static(buildPath));
 
-// Express 5 compatible catch-all
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+// Express 5 requires a named parameter for wildcards
+app.get('/:splat*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // --- 6. SERVER START ---
