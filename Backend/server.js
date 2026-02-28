@@ -73,12 +73,12 @@ app.post('/api/reviews', async (req, res) => {
   } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
-// --- 5. SERVE FRONTEND (Express 5 Compatible) ---
+// --- 5. SERVE FRONTEND ---
 const buildPath = path.resolve(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 
-// Fix for Express 5.2.1: Use named parameter ':splat'
-app.get('/:splat*', (req, res) => {
+// Final fix for Express 5.2.1 PathError
+app.get('/:any(.*)', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
