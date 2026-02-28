@@ -135,8 +135,8 @@ const handlePopupSubmit = async (e) => {
 
   const totalReviews = testimonials.length;
 const averageRating = totalReviews > 0 
-  ? (testimonials.reduce((acc, t) => acc + t.stars, 0) / totalReviews).toFixed(1) 
-  : 0;
+  ? (testimonials.reduce((acc, t) => acc + Number(t.stars), 0) / totalReviews).toFixed(1) 
+  : "0.0";
   
 
   // Auto-Scroll Effect
