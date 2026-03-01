@@ -12,7 +12,7 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',                  // Local React development
   'https://travels-works.onrender.com',    // Your NEW live site
-  'https://travels-2-czoy.onrender.com'     // Your OLD live site (if still used)
+      
 ];
 
 app.use(cors({
