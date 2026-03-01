@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
+const connectDB = require('./db');
 
 const app = express();
 app.use(cors()); 
@@ -14,6 +15,8 @@ const allowedOrigins = [
   'https://travels-works.onrender.com',    // Your NEW live site
       
 ];
+// 2. Call the connection function
+connectDB();
 
 app.use(cors({
   origin: function (origin, callback) {
