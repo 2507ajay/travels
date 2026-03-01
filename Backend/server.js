@@ -29,16 +29,6 @@ app.use(cors({
   credentials: true
 }));
 
-// This will prioritize the Render Environment Variable you set in the dashboard
-const MONGO_URI = process.env.MONGO_URI;
-
-if (!MONGO_URI) {
-  console.error("❌ ERROR: MONGO_URI is not defined in Environment Variables!");
-}
-
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected Successfully to Atlas'))
-  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
 // --- 1. SCHEMAS & MODELS ---
 
@@ -149,11 +139,17 @@ app.get(/.*/, (req, res) => {
   });
 });
 
+// 2. Use the variable from your .env file
+const MONGO_URI = process.env.MONGO_URI;
 
-// --- 6. SERVER START ---
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected Successfully'))
+  .catch((err) => console.error('❌ Connection Error:', err));
+
+// ... rest of your routes ...
+
+// 3. Port logic for Local vs Render
 const PORT = process.env.PORT || 5000;
-
-// Binding to '0.0.0.0' allows Render to detect the service
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
