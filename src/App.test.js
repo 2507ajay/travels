@@ -1,8 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders Sri Balaji Guide brand name', () => {
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+  
+  // Check if your brand name is visible on the screen
+  const brandElement = screen.getByText(/Sri Balaji Guide/i);
+  expect(brandElement).toBeInTheDocument();
 });
