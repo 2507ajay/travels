@@ -18,8 +18,8 @@ const TravelApp = () => {
   const scrollRef = useRef(null);
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
   // --- Updated URL Constants ---
-const API_URL_REVIEWS = 'https://travels-2-czoy.onrender.com/api/reviews';
-const API_URL_DESTINATIONS = 'https://travels-2-czoy.onrender.com/api/destinations';
+const API_URL_REVIEWS = 'https://travels-works.onrender.com/api/reviews';
+const API_URL_DESTINATIONS = 'https://travels-works.onrender.com/api/destinations';
 
   // --- States ---
   const [search, setSearch] = useState("");
@@ -84,7 +84,7 @@ const filtered = (destinations || []).filter(d =>
 const handlePopupSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings', {
+    const response = await fetch('https://travels-works.onrender.com/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(popupFormData),
