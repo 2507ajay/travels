@@ -34,10 +34,9 @@ const API_URL_DESTINATIONS = 'https://travels-2-czoy.onrender.com/api/destinatio
   const [reviewerName, setReviewerName] = useState(""); 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // --- Logic Functions ---
-  const filtered = destinations.filter(d =>
-    d.name.toLowerCase().includes(search.toLowerCase())
-  );
+const filtered = (destinations || []).filter(d =>
+  d?.name?.toLowerCase().includes(search.toLowerCase())
+);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -91,21 +90,19 @@ const handlePopupSubmit = async (e) => {
       body: JSON.stringify(popupFormData),
     });
 
-    // CHANGE: Check response.ok instead of data.success
     if (response.ok) {
       alert(`Success! Trip booked for ${popupFormData.name}.`);
-      setShowWelcomePopup(false); // Close the popup
-      setPopupFormData({ name: '', email: '', number: '', location: '' }); // Clear form
+      setShowWelcomePopup(false);
+      setPopupFormData({ name: '', email: '', number: '', location: '' });
     } else {
       const errorData = await response.json();
-      alert(`Booking Failed: ${errorData.message}`);
+      alert(`Booking Failed: ${errorData.message || "Unknown error"}`);
     }
   } catch (error) {
-    alert("Connection error. The server might be sleeping.");
+    console.error("Popup Submit Error:", error);
+    alert("Connection error. The server might be waking up (Render Sleep). Please try again in 30 seconds.");
   }
 };
-
-
   // --- Automatic Popup Logic ---
   useEffect(() => {
     // Check if user has already seen the popup in this session
