@@ -110,11 +110,9 @@ app.post('/api/reviews', async (req, res) => {
 const buildPath = path.join(__dirname, '..', 'build'); 
 app.use(express.static(buildPath));
 
-// This handles React Routing
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(buildPath, 'index.html'));
-  }
+// Updated syntax for path-to-regexp v7+
+app.get('(.*)', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
 
