@@ -107,12 +107,12 @@ app.post('/api/reviews', async (req, res) => {
 });
 
 // '..' moves UP out of the Backend folder to the root where 'build' lives
-const buildPath = path.join(__dirname, '..', 'build'); 
+const buildPath = path.join(__dirname, '..', 'public'); 
 app.use(express.static(buildPath));
 
-// Updated syntax for path-to-regexp v7+
-app.get('(.*)', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+// Using a Regex literal (no quotes)
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 
