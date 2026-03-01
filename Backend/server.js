@@ -106,14 +106,22 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// '..' moves UP out of the Backend folder to the root where 'build' lives
-const buildPath = path.join(__dirname, '..', 'public'); 
+// 1. Move UP from Backend, then into the 'build' folder created by react-scripts
+const buildPath = path.join(__dirname, '..', 'build'); 
+
+// 2. Serve static assets (JS/CSS) so the browser can find them
+// This MUST come before the catch-all route
 app.use(express.static(buildPath));
 
-app.get('(.*)', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+// 3. Catch-all route using Regex Literal to prevent Node 22 PathErrors
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'), (err) => {
+    if (err) {
+      console.error("❌ Error loading index.html:", err);
+      res.status(500).send("Frontend build not found. Verify 'npm run build' ran successfully.");
+    }
+  });
 });
-
 
 
 // --- SERVER START ---
