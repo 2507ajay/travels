@@ -1,10 +1,8 @@
-// db.js
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    // FIX: Define the variable by pulling it from process.env
     const MONGO_URI = process.env.MONGO_URI;
 
     if (!MONGO_URI) {
@@ -12,15 +10,16 @@ const connectDB = async () => {
       process.exit(1);
     }
 
+    // Connect to Atlas with stability settings
     const conn = await mongoose.connect(MONGO_URI, {
       serverSelectionTimeoutMS: 15000, 
-      socketTimeoutMS: 45000,         
+      socketTimeoutMS: 45000,          
       family: 4, // Essential for Render -> Atlas stability
     });
     
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    console.log(`✅ Connected to MongoDB Atlas: ${conn.connection.host}`);
     
-    // Safety: Disable buffering to prevent the 10s hang on failed queries
+    // Safety: Disable buffering to prevent hangs on failed queries
     mongoose.set('bufferCommands', false);
 
   } catch (error) {
