@@ -24,7 +24,7 @@ const ContactPage = () => {
     e.preventDefault();
 
     // 2. WhatsApp Config
-    const phoneNumber = "+91 93818 49299"; // Your number with country code (no +)
+   const phoneNumber = "919381849299"; // Pure numbers, no spaces or +
     
     // 3. Construct the Message
     const text = `*New Inquiry from Website*%0A%0A` +
@@ -161,5 +161,6 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+
 
 
