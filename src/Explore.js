@@ -12,7 +12,7 @@ const Explore = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // 1. UPDATED: Points to your live Render backend
-  const API_URL = 'https://travels-2-czoy.onrender.com/api/destinations';
+  const API_URL = 'https://travels-works.onrender.com/api/destinations';
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -92,3 +92,4 @@ const Explore = () => {
 };
 
 export default Explore;
+
