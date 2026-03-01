@@ -1,1 +1,52 @@
 
+### Variables (Update this to localhost:5000 for local testing)
+@baseUrl = https://travels-works.onrender.com/api
+
+### 1. Health Check: Get All Destinations
+# Tests if the database connection and "Explore" section data are working.
+GET {{baseUrl}}/destinations
+Accept: application/json
+
+---
+
+### 2. Fetch All Reviews
+# This pulls the data used for your centered overall rating display.
+GET {{baseUrl}}/reviews
+Accept: application/json
+
+---
+
+### 3. Submit a New Review
+# Use this to test if your rating display updates in real-time.
+# The 'stars' value (1-5) will affect your overall average rating.
+POST {{baseUrl}}/reviews
+Content-Type: application/json
+
+{
+  "name": "Ajay",
+  "role": "Verified Explorer",
+  "stars": 5,
+  "text": "Amazing service! The guides were very knowledgeable and the booking was easy.",
+  "avatar": "https://i.pravatar.cc/150?u=ajay"
+}
+
+---
+
+### 4. Create a New Booking
+# Tests the lead generation form logic.
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+
+{
+  "name": "Test Traveler",
+  "email": "traveler@example.com",
+  "number": "9123456789",
+  "location": "Tirupati Temple Visit"
+}
+
+---
+
+### 5. Fetch All Bookings (Admin Check)
+# Use this to verify that the bookings sent in step 4 were actually saved.
+GET {{baseUrl}}/bookings
+Accept: application/json
