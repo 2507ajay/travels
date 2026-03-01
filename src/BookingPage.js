@@ -24,7 +24,7 @@ const BookingPage = () => {
     e.preventDefault();
     try {
       // UPDATED: Points to your live Render backend
-      const response = await fetch('https://travels-2-czoy.onrender.com/api/bookings', {
+      const response = await fetch('https://travels-works.onrender.com/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -101,3 +101,4 @@ const BookingPage = () => {
 };
 
 export default BookingPage;
+
