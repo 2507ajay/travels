@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config({ path: './.env' });
 const connectDB = require('./db');
+const path = require('path');
 
 const app = express();
 
@@ -108,6 +109,14 @@ app.post('/api/reviews', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+});
+
+// 1. Serve static files from the React app build folder
+app.use(express.static(path.join(__dirname, '../build')));
+
+// 2. Handle any requests that don't match the ones above
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 // --- SERVER START ---
