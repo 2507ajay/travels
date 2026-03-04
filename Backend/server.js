@@ -14,7 +14,6 @@ app.use(express.json());
 connectDB();
 
 // --- 1. SCHEMAS & MODELS ---
-
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -24,7 +23,7 @@ const Booking = mongoose.model('Booking', new mongoose.Schema({
 }));
 
 const Destination = mongoose.model('Destination', new mongoose.Schema({
-  name: { type: String, required: true, unique: true }, // Added unique constraint
+  name: { type: String, required: true, unique: true },
   state: String,
   rating: { type: Number, default: 0 }, 
   img: String
@@ -40,7 +39,6 @@ const Review = mongoose.model('Review', new mongoose.Schema({
 }));
 
 // --- 2. DESTINATION ROUTES ---
-
 app.get('/api/destinations', async (req, res) => {
   try {
     const destinations = await Destination.find();
@@ -50,17 +48,13 @@ app.get('/api/destinations', async (req, res) => {
   }
 });
 
-// UPDATED POST: Prevents double-entry of the same destination
 app.post('/api/destinations', async (req, res) => {
   try {
     const { name } = req.body;
-    
-    // Check if name already exists in DB
     const existing = await Destination.findOne({ name });
     if (existing) {
       return res.status(400).json({ success: false, message: "Destination already exists!" });
     }
-
     const newDestination = new Destination(req.body);
     await newDestination.save();
     res.status(201).json({ success: true, data: newDestination });
@@ -70,7 +64,6 @@ app.post('/api/destinations', async (req, res) => {
 });
 
 // --- 3. BOOKING ROUTES ---
-
 app.get('/api/bookings', async (req, res) => {
   try {
     const allBookings = await Booking.find();
@@ -91,7 +84,6 @@ app.post('/api/bookings', async (req, res) => {
 });
 
 // --- 4. REVIEW ROUTES ---
-
 app.get('/api/reviews', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ createdAt: -1 });
@@ -111,17 +103,22 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// 1. Serve static files from the React app build folder
+// --- 5. STATIC FILES & CATCH-ALL ---
+
+// Serve the static files from the React build directory
 app.use(express.static(path.join(__dirname, '../build')));
 
-// To this:
-// Change from app.get('(.*)', ...) to:
-app.get('/:path*', (req, res) => {
+/**
+ * EXPRESS 5 CATCH-ALL
+ * This Regex ensures that any request NOT starting with /api 
+ * is redirected to React's index.html.
+ */
+app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 // --- SERVER START ---
 const PORT = process.env.PORT || 5000; 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
