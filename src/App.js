@@ -192,8 +192,6 @@ const averageRating = totalReviews > 0
 
   return (
     <div className="app-container">
-
-
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo">
@@ -300,15 +298,18 @@ const averageRating = totalReviews > 0
           <div className="grid-layout" ref={scrollRef}>
             {loading ? <p>Loading adventures...</p> : (
               <AnimatePresence>
-                {[...filtered, ...filtered].map((item, index) => (
-                  <motion.div key={`${item._id}-${index}`} layout className="card">
-                    <img src={item.img} alt={item.name} />
-                    <div className="card-overlay">
-                      <span className="location"><MapPin size={14}/> {item.country || item.state}</span>
-                      <h3>{item.name}</h3>
-                      <div className="rating"><Star size={14} className="star"/> {item.rating}</div>
-                    </div>
-                  </motion.div>
+               {filtered.map((item) => (
+  <motion.div key={item._id} layout className="card">
+    <img src={item.img} alt={item.name} />
+    <div className="card-overlay">
+      <span className="location"><MapPin size={14}/> {item.country || item.state}</span>
+      <h3>{item.name}</h3>
+      {/* Keeping your centered rating requirement */}
+      <div className="rating" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Star size={14} className="star"/> {item.rating}
+      </div>
+    </div>
+  </motion.div>
                 ))}
               </AnimatePresence>
             )}
@@ -378,19 +379,20 @@ const averageRating = totalReviews > 0
     <div className="testimonial-container full-width">
       <div className="scroll-wrapper">
         <div className="scroll-track">
-          {testimonials.length > 0 ? [...testimonials, ...testimonials].map((t, i) => (
-            <div className="testimonial-card" key={i}>
-              <div className="stars">{"★".repeat(t.stars)}{"☆".repeat(5 - t.stars)}</div>
-              <p className="content">{t.text}</p>
-              <div className="user-info">
-                <img src={t.avatar} alt={t.name} className="avatar" />
-                <div className="user-details">
-                  <h4>{t.name}</h4>
-                  <span>{t.role || "Explorer"}</span>
-                </div>
-              </div>
-            </div>
-          )) : <p>No reviews yet. Be the first!</p>}
+         {/* AFTER (Fixed): */}
+{testimonials.length > 0 ? testimonials.map((t) => (
+  <div className="testimonial-card" key={t._id}>
+    <div className="stars">{"★".repeat(t.stars)}{"☆".repeat(5 - t.stars)}</div>
+    <p className="content">{t.text}</p>
+    <div className="user-info">
+      <img src={t.avatar} alt={t.name} className="avatar" />
+      <div className="user-details">
+        <h4>{t.name}</h4>
+        <span>{t.role || "Explorer"}</span>
+      </div>
+    </div>
+  </div>
+)) : <p>No reviews yet.</p>}
         </div>
       </div>
     </div>
