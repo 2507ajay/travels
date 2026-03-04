@@ -115,7 +115,8 @@ app.post('/api/reviews', async (req, res) => {
 app.use(express.static(path.join(__dirname, '../build')));
 
 // To this:
-app.get('(.*)', (req, res) => {
+// Change from app.get('(.*)', ...) to:
+app.get('/:path*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
