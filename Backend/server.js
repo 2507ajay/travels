@@ -114,8 +114,8 @@ app.post('/api/reviews', async (req, res) => {
 // 1. Serve static files from the React app build folder
 app.use(express.static(path.join(__dirname, '../build')));
 
-// 2. Handle any requests that don't match the ones above
-app.get('*', (req, res) => {
+// To this:
+app.get('(.*)', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
