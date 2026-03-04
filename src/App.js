@@ -154,8 +154,7 @@ const averageRating = totalReviews > 0
   }, [destinations]);
 
   // --- ==============================================Submit Review Logic ===================================---
- const submitRating = async () => {
-  // 1. Improved Validation
+const submitRating = async () => {
   if (!reviewerName.trim() || !reviewText.trim()) {
     alert("Please enter both your name and a review message.");
     return;
@@ -165,25 +164,23 @@ const averageRating = totalReviews > 0
     name: reviewerName.trim(),
     stars: userRating,
     text: reviewText.trim(),
-    // Using a fallback avatar if needed
     avatar: `https://i.pravatar.cc/150?u=${reviewerName.trim()}` 
   };
 
   try {
-    // 2. Post to API
-    const response = await axios.post(API_URL_REVIEWS, newEntry);
+    // REMOVED 'const response =' since it wasn't being used
+    const res = await axios.post(API_URL_REVIEWS, newEntry);
     
-    // 3. Update local state immediately so the UI reflects the new review
-    setTestimonials((prev) => [response.data, ...prev]);
+    // Use 'res' from axios to update the state
+    setTestimonials((prev) => [res.data, ...prev]);
     
-    // 4. Reset and Close
     setIsModalOpen(false);
     setReviewerName('');
     setReviewText('');
     setUserRating(5);
     setSelectedImage(null);
     
-    alert("Thank you for your review!"); // Confirmation for user
+    alert("Thank you for your review!");
   } catch (err) {
     console.error("Error saving review:", err);
     alert("Failed to save review. Please check if your server is running.");
